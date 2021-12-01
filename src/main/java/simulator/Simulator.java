@@ -9,10 +9,11 @@ import java.util.concurrent.RecursiveTask;
 
 public class Simulator {
     public static final ForkJoinPool POOL = new ForkJoinPool();
-    public static final int SIMULATIONS = 1000000;
+    public static final int SIMULATIONS = 10000000;
+    public static final int SEQUENTIAL_CUTOFF = 10000;
 
     public static void main(String[] args) {
-        Result result = POOL.invoke(new simulateTask(SIMULATIONS, 10000));
+        Result result = POOL.invoke(new simulateTask(SIMULATIONS, SEQUENTIAL_CUTOFF));
         System.out.println(result.getAverage());
     }
 
