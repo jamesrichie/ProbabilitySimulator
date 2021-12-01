@@ -1,4 +1,4 @@
-package simulator;
+package types;
 
 public class Result {
     public Double total;

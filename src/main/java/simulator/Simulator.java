@@ -1,6 +1,7 @@
 package simulator;
 
 import distributions.*;
+import types.*;
 
 import java.lang.Math;
 import java.util.concurrent.ForkJoinPool;
