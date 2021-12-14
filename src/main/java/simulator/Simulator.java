@@ -18,32 +18,15 @@ public class Simulator {
     }
 
     public static Result sequential(int simulationCount) {
-        Poisson poiRV = new Poisson(2.0);
-        Geometric geoRV = new Geometric(0.2);
-        Binomial binRV = new Binomial(100,0.05);
-        DiscreteUniform disRV = new DiscreteUniform(1,4);
+        ContinuousUniform contRV = new ContinuousUniform(0.0,1.0);
+
+        Poisson X = new Poisson(3.41);
 
         Result sequentialResult = new Result();
 
         for (int i = 0; i < simulationCount; i++) {
-            boolean inside = true;
-
-            while (inside) {
-                int door = disRV.sample();
-
-                inside = false;
-
-                if (door == 1) {
-                    sequentialResult.total += poiRV.sample();
-                } else if (door == 2) {
-                    sequentialResult.total += geoRV.sample();
-                } else if (door == 3) {
-                    sequentialResult.total += binRV.sample();
-                } else {
-                    sequentialResult.total += 2;
-                    inside = true;
-                }
-            }
+            Exponential Y = new Exponential(1.0 / X.sample());
+            sequentialResult.total += Y.sample();
             sequentialResult.sampleSize += 1;
         }
         return sequentialResult;

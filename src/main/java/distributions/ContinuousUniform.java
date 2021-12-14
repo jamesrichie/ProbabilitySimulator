@@ -10,7 +10,7 @@ public class ContinuousUniform {
     public ContinuousUniform(Double a, Double b) {
         assert(0.0 <= a); assert(a <= b);
 
-        this.range = b - a + 1;
+        this.range = b - a;
         this.shift = a;
         rand = new Random();
     }
