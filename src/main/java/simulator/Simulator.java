@@ -9,25 +9,18 @@ import java.util.concurrent.RecursiveTask;
 
 public class Simulator {
     public static final ForkJoinPool POOL = new ForkJoinPool();
-    public static final int SIMULATIONS = 10000000;
-    public static final int SEQUENTIAL_CUTOFF = 10000;
+    public static final int SIMULATIONS = 1000000;              // number of simulations to run
+    public static final int SEQUENTIAL_CUTOFF = 10000;          // number of simulations run per thread
 
     public static void main(String[] args) {
-        Result result = POOL.invoke(new simulateTask(SIMULATIONS, SEQUENTIAL_CUTOFF));
-        System.out.println(result.getAverage());
+        Result result = POOL.invoke(new simulateTask(SIMULATIONS, SEQUENTIAL_CUTOFF)); // final simulation result
     }
 
     public static Result sequential(int simulationCount) {
-        ContinuousUniform contRV = new ContinuousUniform(0.0,1.0);
-
-        Poisson X = new Poisson(3.41);
-
         Result sequentialResult = new Result();
 
         for (int i = 0; i < simulationCount; i++) {
-            Exponential Y = new Exponential(1.0 / X.sample());
-            sequentialResult.total += Y.sample();
-            sequentialResult.sampleSize += 1;
+             // implement simulator here
         }
         return sequentialResult;
     }

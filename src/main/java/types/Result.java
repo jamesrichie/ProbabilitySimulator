@@ -17,8 +17,4 @@ public class Result {
     public Result add(Result other) {
         return new Result(total + other.total, sampleSize + other.sampleSize);
     }
-
-    public Double getAverage() {
-        return total / sampleSize;
-    }
 }
