@@ -2,16 +2,16 @@ package distributions;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Bernoulli implements RandomVariable {
-    private final Double p;
+public class Bernoulli implements RandomDistribution {
+    private final double p;
 
-    public Bernoulli(Double p) {
+    public Bernoulli(double p) {
         assert(0.0 <= p); assert(p <= 1.0);
 
         this.p = p;
     }
 
-    public Double sample() {
+    public double sample() {
         if (ThreadLocalRandom.current().nextDouble() < p) {
             return 1.0;
         } else {

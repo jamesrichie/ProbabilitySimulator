@@ -1,10 +1,10 @@
 package distributions;
 
-public class NegativeBinomial implements RandomVariable {
+public class NegativeBinomial implements RandomDistribution {
     private final int r;
-    private final Double p;
+    private final double p;
 
-    public NegativeBinomial(int r, Double p) {
+    public NegativeBinomial(int r, double p) {
         assert(r >= 0);
         assert(0.0 <= p); assert(p <= 1.0);
 
@@ -12,10 +12,10 @@ public class NegativeBinomial implements RandomVariable {
         this.p = p;
     }
 
-    public Double sample() {
+    public double sample() {
         Geometric randomVariable = new Geometric(p);
 
-        Double sum = 0.0;
+        double sum = 0.0;
 
         for (int i = 0; i < r; i++) {
             sum += randomVariable.sample();

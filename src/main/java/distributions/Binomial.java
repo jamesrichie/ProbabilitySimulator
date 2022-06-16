@@ -1,10 +1,10 @@
 package distributions;
 
-public class Binomial implements RandomVariable {
+public class Binomial implements RandomDistribution {
     private final int n;
-    private final Double p;
+    private final double p;
 
-    public Binomial(int n, Double p) {
+    public Binomial(int n, double p) {
         assert(n >= 0);
         assert(0.0 <= p); assert(p <= 1.0);
 
@@ -12,10 +12,10 @@ public class Binomial implements RandomVariable {
         this.p = p;
     }
 
-    public Double sample() {
+    public double sample() {
         Bernoulli randomVariable = new Bernoulli(p);
 
-        Double sum = 0.0;
+        double sum = 0.0;
 
         for (int i = 0; i < n; i++) {
             sum += randomVariable.sample();

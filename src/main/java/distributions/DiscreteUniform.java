@@ -2,7 +2,7 @@ package distributions;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class DiscreteUniform implements RandomVariable {
+public class DiscreteUniform implements RandomDistribution {
     private final int range;
     private final int shift;
 
@@ -24,7 +24,7 @@ public class DiscreteUniform implements RandomVariable {
      *
      * @return
      */
-    public Double sample() {
+    public double sample() {
         return 1.0 * ThreadLocalRandom.current().nextInt(range) + shift;
     }
 }

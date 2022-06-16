@@ -1,7 +1,7 @@
 package types;
 
 public class Result {
-    public Double total;
+    public double total;
     public int sampleSize;
 
     public Result() {
@@ -9,7 +9,7 @@ public class Result {
         sampleSize = 0;
     }
 
-    public Result(Double total, int sampleSize) {
+    public Result(double total, int sampleSize) {
         this.total = total;
         this.sampleSize = sampleSize;
     }
