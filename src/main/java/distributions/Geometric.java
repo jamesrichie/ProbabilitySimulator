@@ -1,22 +1,18 @@
 package distributions;
 
-import java.util.Random;
-
-public class Geometric {
+public class Geometric implements RandomVariable {
     private final Double p;
-    private final Random rand;
 
     public Geometric(Double p) {
         assert(0.0 <= p); assert(p <= 1.0);
 
         this.p = p;
-        rand = new Random();
     }
 
-    public int sample() {
+    public Double sample() {
         Bernoulli randomVariable = new Bernoulli(p);
 
-        int trials = 1;
+        Double trials = 1.0;
 
         while (randomVariable.sample() != 1) {
             trials += 1;

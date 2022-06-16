@@ -1,11 +1,10 @@
 package distributions;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class DiscreteUniform {
+public class DiscreteUniform implements RandomVariable {
     private final int range;
     private final int shift;
-    private final Random rand;
 
     /**
      * Generator for random distribution X ~ Unif(a,b)
@@ -18,7 +17,6 @@ public class DiscreteUniform {
 
         this.range = b - a + 1;
         this.shift = a;
-        rand = new Random();
     }
 
     /**
@@ -26,7 +24,7 @@ public class DiscreteUniform {
      *
      * @return
      */
-    public int sample() {
-        return rand.nextInt(range) + shift;
+    public Double sample() {
+        return 1.0 * ThreadLocalRandom.current().nextInt(range) + shift;
     }
 }

@@ -1,6 +1,6 @@
 package distributions;
 
-public class Binomial {
+public class Binomial implements RandomVariable {
     private final int n;
     private final Double p;
 
@@ -12,10 +12,10 @@ public class Binomial {
         this.p = p;
     }
 
-    public int sample() {
+    public Double sample() {
         Bernoulli randomVariable = new Bernoulli(p);
 
-        int sum = 0;
+        Double sum = 0.0;
 
         for (int i = 0; i < n; i++) {
             sum += randomVariable.sample();

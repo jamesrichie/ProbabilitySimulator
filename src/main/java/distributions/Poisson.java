@@ -1,19 +1,17 @@
 package distributions;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class Poisson {
+public class Poisson implements RandomVariable {
      private final Double l;
-     private final Random rand;
 
     public Poisson(Double l) {
         assert(l >= 0);
 
         this.l = l;
-        rand = new Random();
     }
 
-    private int factorial(int x) {
+    private int factorial(Double x) {
         int result = 1;
 
         for (int i = 2; i <= x; i++) {
@@ -22,7 +20,7 @@ public class Poisson {
         return result;
     }
 
-    private Double power(Double l, int x) {
+    private Double power(Double l, Double x) {
         if (x == 0) {
             return 1.0;
         } else {
@@ -30,15 +28,15 @@ public class Poisson {
         }
     }
 
-    private Double pmf(int x) {
+    private Double pmf(Double x) {
         return Math.exp(-l) * power(l, x) / factorial(x);
     }
 
-    public int sample() {
-        Double Y = rand.nextDouble();
-        Double cdf = pmf(0);
+    public Double sample() {
+        Double Y = ThreadLocalRandom.current().nextDouble();
+        Double cdf = pmf(0.0);
 
-        int i = 0;
+        Double i = 0.0;
 
         while (Y > cdf) {
             i++;

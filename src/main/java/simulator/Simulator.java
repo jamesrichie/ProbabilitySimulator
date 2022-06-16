@@ -8,24 +8,25 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 public class Simulator {
-    public static final ForkJoinPool POOL = new ForkJoinPool();
-    public static final int SIMULATIONS = 1000000;              // number of simulations to run
-    public static final int SEQUENTIAL_CUTOFF = 10000;          // number of simulations run per thread
+    public final ForkJoinPool POOL = new ForkJoinPool();
+    public int simulations;       // number of simulations to run
+    public int sequentialCutoff;  // number of simulations run per thread
 
-    public static void main(String[] args) {
-        Result result = POOL.invoke(new simulateTask(SIMULATIONS, SEQUENTIAL_CUTOFF)); // final simulation result
+    public Simulator(int simulations, int threadCount) {
+        this.simulations = simulations;
+        this.sequentialCutoff = simulations / threadCount;
     }
 
-    public static Result sequential(int simulationCount) {
-        Result sequentialResult = new Result();
+    public void run() {
+        long startTime = System.nanoTime();
+        Result result = POOL.invoke(new simulateTask(simulations, sequentialCutoff)); // final simulation result
+        long endTime = System.nanoTime();
 
-        for (int i = 0; i < simulationCount; i++) {
-             // implement simulator here
-        }
-        return sequentialResult;
+        System.out.println("Result (took " + (endTime - startTime) * Math.pow(10, -9) + " seconds)");
+        System.out.println(result);
     }
 
-    public static class simulateTask extends RecursiveTask<Result> {
+    public class simulateTask extends RecursiveTask<Result> {
         int simulationCount, sequentialCutoff;
 
         public simulateTask(int simulationCount, int sequentialCutoff) {
@@ -33,20 +34,31 @@ public class Simulator {
             this.sequentialCutoff = sequentialCutoff;
         }
 
-        protected Result compute() {
+        public Result compute() {
             if (simulationCount <= sequentialCutoff) {
                 return sequential(simulationCount);
             }
-
             simulateTask left = new simulateTask((int) Math.floor(simulationCount / 2.0), sequentialCutoff);
             simulateTask right = new simulateTask((int) Math.ceil(simulationCount / 2.0), sequentialCutoff);
 
             right.fork();
 
             Result leftResult = left.compute();
-            Result rightResult = right.compute();
+            Result rightResult = right.join();
 
             return leftResult.add(rightResult);
+        }
+
+        public Result sequential(int simulationCount) {
+            Result sequentialResult = new Result();
+            RandomVariable generator = new Poisson(50.0);
+
+            for (int i = 0; i < simulationCount; i++) {
+                // implement simulator here
+                sequentialResult.total += generator.sample();
+                sequentialResult.sampleSize++;
+            }
+            return sequentialResult;
         }
     }
 }

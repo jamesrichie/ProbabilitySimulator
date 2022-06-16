@@ -1,19 +1,17 @@
 package distributions;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class Exponential {
+public class Exponential implements RandomVariable {
     private final Double l;
-    private final Random rand;
 
     public Exponential(Double l) {
         assert(l >= 0);
 
         this.l = l;
-        rand = new Random();
     }
 
     public Double sample() {
-        return Math.log(1 - rand.nextDouble()) / (-l);
+        return Math.log(1 - ThreadLocalRandom.current().nextDouble()) / (-l);
     }
 }

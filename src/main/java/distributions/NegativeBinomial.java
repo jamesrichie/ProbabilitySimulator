@@ -1,6 +1,6 @@
 package distributions;
 
-public class NegativeBinomial {
+public class NegativeBinomial implements RandomVariable {
     private final int r;
     private final Double p;
 
@@ -12,10 +12,10 @@ public class NegativeBinomial {
         this.p = p;
     }
 
-    public int sample() {
+    public Double sample() {
         Geometric randomVariable = new Geometric(p);
 
-        int sum = 0;
+        Double sum = 0.0;
 
         for (int i = 0; i < r; i++) {
             sum += randomVariable.sample();
