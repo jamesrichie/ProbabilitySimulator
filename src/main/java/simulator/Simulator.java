@@ -51,12 +51,9 @@ public class Simulator {
 
         public Result sequential(int simulationCount) {
             Result sequentialResult = new Result();
-            RandomDistribution generator = new Poisson(50.0);
 
             for (int i = 0; i < simulationCount; i++) {
                 // implement simulator here
-                sequentialResult.total += generator.sample();
-                sequentialResult.sampleSize++;
             }
             return sequentialResult;
         }
