@@ -1,18 +1,21 @@
 package simulator;
 
-import distributions.*;
-import types.*;
-
-import java.lang.Math;
+import java.lang.*;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
+import types.*;
+import distributions.*;
+import sets.cardDeck.*;
+import static sets.cardDeck.Ranks.*;
+import static sets.cardDeck.Suits.*;
+
 public class Simulator {
     public final ForkJoinPool POOL = new ForkJoinPool();
-    public int simulations;       // number of simulations to run
-    public int sequentialCutoff;  // number of simulations run per thread
+    public long simulations;       // number of simulations to run
+    public long sequentialCutoff;  // number of simulations run per thread
 
-    public Simulator(int simulations, int threadCount) {
+    public Simulator(long simulations, long threadCount) {
         this.simulations = simulations;
         this.sequentialCutoff = simulations / threadCount;
     }
@@ -22,14 +25,14 @@ public class Simulator {
         Result result = POOL.invoke(new simulateTask(simulations, sequentialCutoff)); // final simulation result
         long endTime = System.nanoTime();
 
-        System.out.println("Result (took " + (endTime - startTime) * Math.pow(10, -9) + " seconds)");
         System.out.println(result);
+        System.out.println("\nTook " + (endTime - startTime) * Math.pow(10, -9) + " seconds to run " +  simulations + " simulations");
     }
 
-    public class simulateTask extends RecursiveTask<Result> {
-        int simulationCount, sequentialCutoff;
+    public static class simulateTask extends RecursiveTask<Result> {
+        long simulationCount, sequentialCutoff;
 
-        public simulateTask(int simulationCount, int sequentialCutoff) {
+        public simulateTask(long simulationCount, long sequentialCutoff) {
             this.simulationCount = simulationCount;
             this.sequentialCutoff = sequentialCutoff;
         }
@@ -38,8 +41,8 @@ public class Simulator {
             if (simulationCount <= sequentialCutoff) {
                 return sequential(simulationCount);
             }
-            simulateTask left = new simulateTask((int) Math.floor(simulationCount / 2.0), sequentialCutoff);
-            simulateTask right = new simulateTask((int) Math.ceil(simulationCount / 2.0), sequentialCutoff);
+            simulateTask left = new simulateTask((long) Math.floor(simulationCount / 2.0), sequentialCutoff);
+            simulateTask right = new simulateTask((long) Math.ceil(simulationCount / 2.0), sequentialCutoff);
 
             right.fork();
 
@@ -49,10 +52,10 @@ public class Simulator {
             return leftResult.add(rightResult);
         }
 
-        public Result sequential(int simulationCount) {
+        public Result sequential(long simulationCount) {
             Result sequentialResult = new Result();
 
-            for (int i = 0; i < simulationCount; i++) {
+            for (long i = 0; i < simulationCount; i++) {
                 // implement simulator here
             }
             return sequentialResult;
